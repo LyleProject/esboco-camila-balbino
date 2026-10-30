@@ -191,6 +191,21 @@ a { color: inherit; }
 .facts h3 { font-size: var(--t-m); line-height: 1.25; margin-bottom: 6px; }
 .facts p { color: var(--muted); }
 
+/* Cuidado de perto: fotos reais do consultório em molduras suaves com fio dourado */
+.closer { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
+.closer-text { grid-column: 1 / 5; position: sticky; top: 120px; }
+.closer-text h2 { font-size: var(--t-l); }
+.closer-text p { margin-top: 24px; color: var(--muted); max-width: 34ch; }
+.closer-text .btn { margin-top: 32px; }
+.shot { position: relative; margin: 0; }
+.shot-a { grid-column: 6 / 9; }
+.shot-b { grid-column: 9 / 13; margin-top: 120px; }
+.shot-in { position: relative; border-radius: 28px; overflow: hidden; box-shadow: var(--shade-3); aspect-ratio: 4 / 5; }
+.shot-in::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5); pointer-events: none; }
+.shot::before { content: ""; position: absolute; inset: -12px; border-radius: 38px; border: 1px solid var(--gold-hi); pointer-events: none; }
+.shot img { width: 100%; height: 100%; object-fit: cover; }
+.shot figcaption { margin-top: 22px; font-size: var(--t-s); color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.shot figcaption::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--metal); }
 /* Linha minimalista: os tratamentos deslizam apagados e acendem ao passar pelo centro */
 .mm { margin-top: var(--gap-section); overflow: clip; padding-block: 6px;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
@@ -371,6 +386,9 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 }
 
 @media (max-width: 900px) {
+  .closer-text { grid-column: 1 / -1; position: static; margin-bottom: 48px; }
+  .shot-a { grid-column: 1 / 7; }
+  .shot-b { grid-column: 7 / 13; margin-top: 64px; }
   .menu-btn {
     display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 0; cursor: pointer;
     background: var(--surface-2); color: var(--ink); border-radius: 12px;
@@ -517,6 +535,22 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="section wrap closer" id="consultorio" aria-labelledby="perto-h">
+    <div class="closer-text">
+      <h2 id="perto-h" data-r>Cuidado de perto</h2>
+      <p data-r style="--d:1">Um pouco do dia a dia no consultório: atendimento com calma para todas as idades e precisão nos detalhes, com lupa de aumento.</p>
+      <a class="btn btn--ghost" data-r style="--d:2" href="#agendar">Agendar uma visita</a>
+    </div>
+    <figure class="shot shot-a" data-r style="--d:1">
+      <div class="shot-in"><img src="consultorio-kit.jpg" width="460" height="587" alt="Dra. Camila abraçada a um menino sorridente que segura o kit de escovação ganho na consulta" loading="lazy"></div>
+      <figcaption>Kit de escovação depois da consulta</figcaption>
+    </figure>
+    <figure class="shot shot-b" data-r style="--d:2">
+      <div class="shot-in"><img src="consultorio-lupa.jpg" width="458" height="576" alt="Dra. Camila atendendo uma criança na cadeira, usando lupa de aumento" loading="lazy"></div>
+      <figcaption>Atendimento com lupa de aumento</figcaption>
+    </figure>
   </section>
 
   <div class="mm" aria-hidden="true"><div class="mm-move"><div class="mm-track"><span>Facetas</span><span>Lentes de contato</span><span>Alinhadores</span><span>Implantes</span><span>Clareamento</span><span>Prevenção</span><span>Facetas</span><span>Lentes de contato</span><span>Alinhadores</span><span>Implantes</span><span>Clareamento</span><span>Prevenção</span><span>Facetas</span><span>Lentes de contato</span><span>Alinhadores</span><span>Implantes</span><span>Clareamento</span><span>Prevenção</span></div></div></div>
@@ -818,6 +852,11 @@ if (reduz) {
     linha.style.setProperty("--p", p.toFixed(3));
     passos.forEach((st, i) => st.classList.toggle("lit", p >= i / (passos.length - 1) - 0.03));
   }, { target: linha, offset: ["start 85%", "center 55%"] });
+
+  // Cuidado de perto: as duas fotos sobem em ritmos diferentes com a rolagem
+  const perto = document.querySelector(".closer");
+  scroll(animate(".shot-a .shot-in", { y: [40, -40] }, { ease: "linear" }), { target: perto, offset: ["start end", "end start"] });
+  scroll(animate(".shot-b .shot-in", { y: [90, -60] }, { ease: "linear" }), { target: perto, offset: ["start end", "end start"] });
 
   // 5. Linha minimalista: desliza devagar, a rolagem dá um empurrão e a palavra do centro acende
   animate(".mm-track", { x: ["0%", "-33.333%"] }, { duration: 52, repeat: Infinity, ease: "linear" });
